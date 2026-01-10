@@ -16,8 +16,8 @@ class PSI_Undrained_Backend:
             st (float): Sensitivity
             alpha (float): Adhesion Factor
             rate (float): Displacement Rate
-            sub_wt_raw (float): Submerged Weight Input (Cell B9 value)
-            su_b14 (float): Second Shear Strength parameter (Cell B14 value)
+            Bulk_wt_raw (float): Bulk unit Weight Input 
+            su_b14 (float): Second Shear Strength parameter 
             coeffs_conc (dict): Dictionary of SSR and Prem for Concrete
             coeffs_pet (dict): Dictionary of SSR and Prem for PET
         """
@@ -29,7 +29,7 @@ class PSI_Undrained_Backend:
         self.st = st
         self.alpha = alpha
         self.rate = rate
-        self.sub_wt = sub_wt_raw - 10.05  # VBA Logic: input - 10.05
+        self.sub_wt = sub_wt_raw - 10.05  #  Logic: input - 10.05
         self.su_b14 = su_b14 # Specific input for Fl_remain formula
         
         self.coeffs_conc = coeffs_conc
@@ -152,3 +152,4 @@ class PSI_Undrained_Backend:
                 })
                 
         return pd.DataFrame(all_results)
+
