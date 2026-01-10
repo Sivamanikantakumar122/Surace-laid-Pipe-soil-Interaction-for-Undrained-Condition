@@ -104,7 +104,7 @@ if st.button("Run Analysis", type="primary"):
     if inter['V'] >= inter['Qv']:
         st.warning("⚠️ WARNING: Effective Force (V) >= Soil Resistance (Qv). Pipe may sink.")
     else:
-        st.success("✅ Check Passed: V < Qv")
+        st.success("✅ Check Passed: V < Qv .Increase Penetration value to reach Qv")
 
     st.markdown("---")
 
@@ -123,6 +123,7 @@ if st.button("Run Analysis", type="primary"):
 
 else:
     st.info("Adjust inputs on the left sidebar and click 'Run Analysis' to see results.")
+
 
 
 
