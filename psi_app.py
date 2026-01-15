@@ -1,12 +1,16 @@
 import streamlit as st
 import plotly.graph_objects as go
+import pandas as pd  # <--- Added this to handle tables
 import psi_backend as backend
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(page_title="PSI Analysis Tool", layout="wide")
 st.title("Pipe-Soil Interaction Analysis (Undrained)")
+
+# Add your credits
 st.markdown("---")
-st.markdown("**Created by Sivamanikanta Kumar** | Geotechnical Engineer")
+st.markdown("### Developed by **Sivamanikanta Kumar**")
+st.markdown("Geotechnical Engineer")
 
 # --- SIDEBAR INPUTS ---
 with st.sidebar:
@@ -73,21 +77,52 @@ if metrics['V'] > metrics['Qv']:
 else:
     st.success("STABILITY OK: Effective Force (V) < Vertical Capacity (Qv).")
 
+# --- DATA TABLE SECTION (NEW) ---
+st.markdown("---")
+st.subheader("Detailed Resistance Values")
+
+# Convert the results list into a Pandas DataFrame for display
+table_data = []
+for p in results["profiles"]:
+    table_data.append({
+        "Surface": p["Surface"],
+        "Estimate": p["Estimate"],
+        "Axial Brk (kN/m)": p["Axial"]["BreakForce"],
+        "Xbrk (mm)": p["Axial"]["BreakDisp"],
+        "Axial Res (kN/m)": p["Axial"]["ResForce"],
+        "Xres (mm)": p["Axial"]["ResDisp"],
+        "Lat Brk (kN/m)": p["Lateral"]["BreakForce"],
+        "Ybrk (mm)": p["Lateral"]["BreakDisp"],
+        "Lat Res (kN/m)": p["Lateral"]["ResForce"],
+        "Yres (mm)": p["Lateral"]["ResDisp"]
+    })
+
+df_results = pd.DataFrame(table_data)
+
+# Show two separate tables for clarity
+c1, c2 = st.columns(2)
+with c1:
+    st.markdown("**Concrete Surface Values**")
+    st.dataframe(df_results[df_results["Surface"] == "Concrete"].drop(columns=["Surface"]), use_container_width=True)
+
+with c2:
+    st.markdown("**PET Surface Values**")
+    st.dataframe(df_results[df_results["Surface"] == "PET"].drop(columns=["Surface"]), use_container_width=True)
+
+
 # --- PLOTTING SECTION ---
 st.markdown("---")
-st.subheader("Resistance Profiles")
+st.subheader("Resistance Profiles (Graphs)")
 
 def plot_surface_graphs(surface_name):
-    # Create two empty figures (Axial and Lateral)
     fig_ax = go.Figure()
     fig_lat = go.Figure()
     
     colors = {"P5": "green", "P50": "blue", "P95": "red"}
     
-    # Filter results for the specific surface
-    surface_results = [r for r in results["profiles"] if r["Surface"] == surface_name]
+    subset = [r for r in results["profiles"] if r["Surface"] == surface_name]
     
-    for res in surface_results:
+    for res in subset:
         est = res["Estimate"]
         color = colors.get(est, "black")
         
@@ -107,14 +142,12 @@ def plot_surface_graphs(surface_name):
             mode='lines+markers', name=est, line=dict(color=color)
         ))
     
-    # Update Layouts
     fig_ax.update_layout(title=f"Axial Resistance ({surface_name})", xaxis_title="Displacement (mm)", yaxis_title="Force (kN/m)", height=350)
     fig_lat.update_layout(title=f"Lateral Resistance ({surface_name})", xaxis_title="Displacement (mm)", yaxis_title="Force (kN/m)", height=350)
     
     return fig_ax, fig_lat
 
-# Tabs for switching surfaces
-tab1, tab2 = st.tabs(["Concrete Surface", "PET Surface"])
+tab1, tab2 = st.tabs(["Concrete Graphs", "PET Graphs"])
 
 with tab1:
     fig1, fig2 = plot_surface_graphs("Concrete")
@@ -127,4 +160,3 @@ with tab2:
     c3, c4 = st.columns(2)
     c3.plotly_chart(fig3, use_container_width=True)
     c4.plotly_chart(fig4, use_container_width=True)
-
