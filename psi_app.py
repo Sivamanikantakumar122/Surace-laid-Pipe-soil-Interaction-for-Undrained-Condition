@@ -30,9 +30,9 @@ sub_wt_input = st.sidebar.number_input("Submerged Wt Input (from B9)", value=18.
 with st.sidebar.expander("Advanced Coefficients (SSR & Prem)"):
     st.markdown("**Concrete Surface**")
     c_ssr = [
-        st.number_input("Conc SSR (Low)", value=0.8),
-        st.number_input("Conc SSR (Best)", value=1.0),
-        st.number_input("Conc SSR (High)", value=1.2)
+        st.number_input("Conc SSR (Low)", value=0.25),
+        st.number_input("Conc SSR (Best)", value=0.25),
+        st.number_input("Conc SSR (High)", value=0.25)
     ]
     c_prem = [
         st.number_input("Conc Prem (Low)", value=0.2),
@@ -42,9 +42,9 @@ with st.sidebar.expander("Advanced Coefficients (SSR & Prem)"):
     
     st.markdown("**PET Surface**")
     p_ssr = [
-        st.number_input("PET SSR (Low)", value=0.7),
-        st.number_input("PET SSR (Best)", value=0.9),
-        st.number_input("PET SSR (High)", value=1.1)
+        st.number_input("PET SSR (Low)", value=0.25),
+        st.number_input("PET SSR (Best)", value=0.25),
+        st.number_input("PET SSR (High)", value=0.25)
     ]
     p_prem = [
         st.number_input("PET Prem (Low)", value=0.15),
@@ -137,3 +137,4 @@ if st.button("Run Analysis", type="primary"):
 
 else:
     st.info("Adjust inputs in the sidebar and click 'Run Analysis'.")
+
