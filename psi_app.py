@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 from psi_backend import PSI_Undrained_Model
 
 # --- PAGE CONFIGURATION ---
@@ -137,4 +136,5 @@ if st.button("Run Analysis", type="primary"):
 
 else:
     st.info("Adjust inputs in the sidebar and click 'Run Analysis'.")
+
 
