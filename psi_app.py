@@ -6,8 +6,7 @@ import psi_backend as backend
 st.set_page_config(page_title="PSI Analysis Tool", layout="wide")
 st.title("Pipe-Soil Interaction Analysis (Undrained)")
 st.markdown("---")
-    st.markdown("### Developed by **Sivamanikanta Kumar**")
-    st.markdown("Geotechnical Engineer")
+st.markdown("**Created by Sivamanikanta Kumar** | Geotechnical Engineer")
 
 # --- SIDEBAR INPUTS ---
 with st.sidebar:
@@ -128,3 +127,4 @@ with tab2:
     c3, c4 = st.columns(2)
     c3.plotly_chart(fig3, use_container_width=True)
     c4.plotly_chart(fig4, use_container_width=True)
+
